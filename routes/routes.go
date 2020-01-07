@@ -1,9 +1,9 @@
-package handlers
+package routes
 
 import (
 	"net/http"
 
-	common "../common"
+	"../controllers"
 	"github.com/gorilla/mux"
 )
 
@@ -11,9 +11,9 @@ var router = mux.NewRouter()
 
 // Handler method declaration
 func Handler() {
-	router.HandleFunc("/", common.IndexPageHandler) // GET
+	router.HandleFunc("/", controllers.IndexPageHandler) // GET
 
-	router.HandleFunc("/register", common.RegisterHandler).Methods("POST")
+	router.HandleFunc("/register", controllers.RegisterHandler).Methods("POST")
 
 	http.Handle("/", router)
 }
