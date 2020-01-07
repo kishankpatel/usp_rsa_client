@@ -4,13 +4,17 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"../models"
+	"github.com/joho/godotenv"
 )
 
 // RegisterAgent method declaaration
 func RegisterAgent(agentID string) string {
-	response, err := http.Post("http://localhost:4040/register/"+string(agentID), "application/json", nil)
+	godotenv.Load()
+	url, _ := os.LookupEnv("CRYPTO_SERVER_URL")
+	response, err := http.Post(url+"/register/"+string(agentID), "application/json", nil)
 	if err != nil {
 		panic(err)
 	}
