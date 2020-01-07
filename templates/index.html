@@ -1,0 +1,62 @@
+<div class="register-page">
+  <h2>Send Message</h2>
+  <hr>
+  <form method="POST" action="/register">
+
+    <div class="field-group">
+      <label for="agent_id">Agent ID</label>
+      <input type="text" name="agent_id" id="agent_id">
+    </div>
+
+    <div class="field-group">
+      <label for="message">Message</label>
+      <input type="text" name="message" id="message">
+    </div>
+
+    <button type="submit" class="submit-button">Send</button>
+  </form>
+</div>
+<style>
+  body {
+    font-family: "Arial";
+    color: #333;
+  }
+  .register-page {
+    width: 500px;
+    border: 1px solid #333;
+    margin: 50px auto 0;
+    padding: 0 30px 30px 30px;
+    letter-spacing: 1px;
+  }
+  .register-page label {
+    min-width: 200px;
+    display: inline-block;
+  }
+  .field-group {
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  .field-group input {
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    margin-top: 10px;
+    font-size: 16px;
+    width: 500px;
+    height: 40px;
+    outline: none;
+  }
+  .submit-button {
+    border: none;
+    padding: 9px;
+    font-size: 16px;
+    color: #fff;
+    background: green;
+    cursor: pointer;
+    outline: none;
+    width: 100px;
+    text-align: center;
+  }
+  form {
+    margin-top: 30px;
+  }
+</style>
