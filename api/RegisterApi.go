@@ -2,11 +2,13 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 
 	"../models"
+	"../services"
 	"github.com/joho/godotenv"
 )
 
@@ -23,7 +25,11 @@ func RegisterAgent(agentID string) string {
 	if readErr != nil {
 		panic(readErr)
 	}
-	println("body:", body)
+	fmt.Printf("body:%s", body)
+
+	services.NewAgentDataService(body)
+	// ds.parseAgentData()
+	// agentDataService.AddAgentData(body)
 
 	var agentData models.AgentData
 	readErr = json.Unmarshal(body, &agentData)
