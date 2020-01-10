@@ -1,12 +1,12 @@
 package models
 
 import (
-	"crypto/aes"
-	"crypto/cipher"
 	"crypto/rand"
+	"crypto/rsa"
+	"crypto/sha256"
 	"encoding/base64"
-	"fmt"
-	"io"
+
+	"github.com/kishankpatel/usp_client/utils"
 )
 
 // Message struct Declaration
@@ -26,17 +26,19 @@ func NewMessage(agent Agent, plainText string) Message {
 
 // Encrypt - encrypts the message and returns the encrypted text
 func (message *Message) Encrypt() error {
-	block, _ := aes.NewCipher(message.Key())
-	gcm, _ := cipher.NewGCM(block)
-	nonce := make([]byte, gcm.NonceSize())
-	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
-		return err
-	}
-
-	ciphertext := gcm.Seal(nonce, nonce, []byte(message.PlainText), nil)
-	encodedText := base64.URLEncoding.EncodeToString(ciphertext)
-	message.EncryptedText = encodedText
-	fmt.Printf("encrypted text %s", encodedText)
+	publicKey, _ := utils.StringToPublicKey(message.PublicKey())
+	label := []byte("")
+	hash := sha256.New()
+	byteMessage := []byte(message.PlainText)
+	ciphertext, _ := rsa.EncryptOAEP(
+		hash,
+		rand.Reader,
+		publicKey,
+		byteMessage,
+		label,
+	)
+	encodeCiphertext := base64.URLEncoding.EncodeToString(ciphertext)
+	message.EncryptedText = encodeCiphertext
 	return nil
 }
 
@@ -45,12 +47,7 @@ func (message Message) AgentID() string {
 	return message.Agent.AgentID
 }
 
-// Key - getter used to fetch the Key info
-func (message Message) Key() []byte {
-	fmt.Println("Key...", message.Agent.Key)
-	key, err := base64.URLEncoding.DecodeString(message.Agent.Key)
-	if err != nil {
-		return []byte{}
-	}
-	return key
+// PublicKey - getter used to fetch the PublicKey info
+func (message Message) PublicKey() string {
+	return message.Agent.PublicKey
 }

@@ -42,7 +42,7 @@ func Handler() {
 
 		agentResponse := models.NewAgentData(response)
 		message := models.NewMessage(agentResponse.AgentObj, plainText)
-
+		fmt.Println("\n\nEncrypted Text: ", message.EncryptedText)
 		err = message.Encrypt()
 		if err != nil {
 			panic(err)
@@ -53,7 +53,7 @@ func Handler() {
 			panic(err)
 		}
 
-		fmt.Println("Response from server for the message:", responseStr)
+		fmt.Println("\nResponse from server for the message:", responseStr)
 
 		http.Redirect(w, r, r.Header.Get("Referer"), 302)
 	}).Methods("POST")
