@@ -26,17 +26,23 @@ func NewMessage(agent Agent, plainText string) Message {
 
 // Encrypt - encrypts the message and returns the encrypted text
 func (message *Message) Encrypt() error {
-	publicKey, _ := utils.StringToPublicKey(message.PublicKey())
+	publicKey, err := utils.StringToPublicKey(message.PublicKey())
+	if err != nil {
+		return err
+	}
 	label := []byte("")
 	hash := sha256.New()
 	byteMessage := []byte(message.PlainText)
-	ciphertext, _ := rsa.EncryptOAEP(
+	ciphertext, err := rsa.EncryptOAEP(
 		hash,
 		rand.Reader,
 		publicKey,
 		byteMessage,
 		label,
 	)
+	if err != nil {
+		return err
+	}
 	encodeCiphertext := base64.URLEncoding.EncodeToString(ciphertext)
 	message.EncryptedText = encodeCiphertext
 	return nil
